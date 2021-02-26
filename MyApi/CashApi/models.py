@@ -7,7 +7,6 @@ class AccountHead(models.Model):
     # id = models.AutoField(Primary_key=True)
     user = models.OneToOneField(User, related_name='acc_head', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-
     def __str__(self):
         return self.name
 
@@ -34,8 +33,19 @@ class JournalLog(models.Model):
     transaction_date = models.DateTimeField(auto_now_add=True)
     reference_no = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.reference_no
+
 class JournalLogDetail(models.Model):
     # id = models.AutoField(Primary_key=True)
     journal_log = models.ForeignKey(JournalLog, on_delete=models.CASCADE)
     account_name = models.ForeignKey(AccountName, on_delete=models.CASCADE)
     amount = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return self.journal_log.reference_no
+
+class CashFlow(models.Model):
+    user = models.ForeignKey(AccountHead, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
+    cash = models.IntegerField(default=0)
